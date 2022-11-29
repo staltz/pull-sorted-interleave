@@ -68,7 +68,9 @@ test('pull too much', function (t) {
           t.notOk(data, 'no data');
 
           source(null, (end, data) => {
-            console.log(end, data);
+            t.equals(end, true);
+            t.notOk(data, 'no data');
+
             t.end();
           });
         });
