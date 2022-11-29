@@ -47,3 +47,32 @@ test('interleave descending', function (t) {
     }),
   );
 });
+
+test('pull too much', function (t) {
+  const source = interleave([pull.values([1, 3]), pull.values([2])], ascending);
+
+  source(null, (end, data) => {
+    t.error(end, 'no error');
+    t.equals(data, 1);
+
+    source(null, (end, data) => {
+      t.error(end, 'no error');
+      t.equals(data, 2);
+
+      source(null, (end, data) => {
+        t.error(end, 'no error');
+        t.equals(data, 3);
+
+        source(null, (end, data) => {
+          t.equals(end, true);
+          t.notOk(data, 'no data');
+
+          source(null, (end, data) => {
+            console.log(end, data);
+            t.end();
+          });
+        });
+      });
+    });
+  });
+});

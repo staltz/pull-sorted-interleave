@@ -57,6 +57,7 @@ module.exports = function interleave(streams, compare) {
 
   return function interleavedSource(end, cb) {
     if (end) return cb(end);
+    if (!state) return cb(true);
     getNextMin(cb);
   };
 };
